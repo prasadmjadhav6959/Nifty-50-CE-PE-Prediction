@@ -46,13 +46,20 @@ def predict_ce_pe(model, scaler, latest_data, news_articles):
     sentiment_score = analyze_news_sentiment(news_articles)
     
     results = []
-    for i in range(5):
-        if prediction == 1:
+    if prediction == 1:
+        for i in range(2):
             strike_price = round(latest_data["Close"] / 100) * 100 + (100 * i)
             results.append(f"{strike_price} CE Buy it")
-        else:
+        for i in range(3):
             strike_price = round(latest_data["Close"] / 100) * 100 - (100 * i)
             results.append(f"{strike_price} PE Buy it")
+    else:
+        for i in range(3):
+            strike_price = round(latest_data["Close"] / 100) * 100 - (100 * i)
+            results.append(f"{strike_price} PE Buy it")
+        for i in range(2):
+            strike_price = round(latest_data["Close"] / 100) * 100 + (100 * i)
+            results.append(f"{strike_price} CE Buy it")
     
     return results
 
@@ -66,7 +73,7 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     df = preprocess_nifty50_data(df)
     model, scaler = train_model(df)
-    latest_values = df.iloc[-1][["Open", "High", "Low", "Close", "SMA_10", "EMA_10", "Volatility"]]
+    latest_values = df.iloc[-1][["Open", "High", "Low", "Close", "SMA_10", "EMA_10", "Volatility"]].values
     news_articles = news_input.split("\n")
     
     if st.button("Predict CE/PE"):
