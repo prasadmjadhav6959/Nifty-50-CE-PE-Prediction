@@ -73,7 +73,7 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
     df = preprocess_nifty50_data(df)
     model, scaler = train_model(df)
-    latest_values = df.iloc[-1][["Open", "High", "Low", "Close", "SMA_10", "EMA_10", "Volatility"]].values
+    latest_values = df.iloc[-1][["Open", "High", "Low", "Close", "SMA_10", "EMA_10", "Volatility"]]
     news_articles = news_input.split("\n")
     
     if st.button("Predict CE/PE"):
